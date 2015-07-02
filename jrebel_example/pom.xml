@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xmlns="http://maven.apache.org/POM/4.0.0"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>info.programmador</groupId>
+    <artifactId>jrebel-example</artifactId>
+    <version>1.0</version>
+    <packaging>war</packaging>
+
+    <name>JRebel example (WAR)</name>
+
+    <build>
+        <finalName>jrebel-example</finalName>
+
+        <plugins>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-war-plugin</artifactId>
+                <version>2.6</version>
+            </plugin>
+            <plugin>
+                <groupId>org.zeroturnaround</groupId>
+                <artifactId>jrebel-maven-plugin</artifactId>
+                <version>1.1.5</version>
+                <executions>
+                    <execution>
+                        <id>generate-rebel-xml</id>
+                        <!-- rebel.xml будет сгенерирован
+                             на этой фазе жизненного цикла Maven -->
+                        <phase>process-resources</phase>
+                        <goals>
+                            <goal>generate</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <!-- если false, тогда rebel.xml будет создан
+                         только если отличаются timestamp-ы файлов pom.xml и rebel.xml -->
+                    <alwaysGenerate>true</alwaysGenerate>
+                    <!-- директория, которую jrebel будет сканировать на изменения
+                         файлов веб-приложения -->
+                    <webappDirectory>${basedir}/src/main/webapp/</webappDirectory>
+                    <!-- Не генерировать дефолтную конфигурацию jrebel.
+                         Например, данный флаг может пригодиться, если в проекте
+                         используется нестандартный classpath -->
+                    <generateDefaultElements>false</generateDefaultElements>
+                    <classpath>
+                        <resources>
+                            <resource>
+                                <directory>${basedir}/target/classes</directory>
+                            </resource>
+                        </resources>
+                    </classpath>
+                    <!-- Выводить в консоль содержимое сгенерированного rebel.xml -->
+                    <showGenerated>true</showGenerated>
+                    <web>
+                        <resources>
+                            <resource>
+                                <target>WEB-INF/</target>
+                                <directory>${basedir}/src/main/webapp/WEB-INF/</directory>
+                                <excludes>
+                                    <!-- Исключаем из сканирования файлы.
+                                         Это может быть удобно, например, если
+                                         исключаемый файл содержит свойства,
+                                         фильтруемые Maven-ом. -->
+                                    <exclude>applicationContext.xml</exclude>
+                                </excludes>
+                            </resource>
+                        </resources>
+                    </web>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+</project>
