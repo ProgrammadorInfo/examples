@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xmlns="http://maven.apache.org/POM/4.0.0"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>info.programmador</groupId>
+    <artifactId>separate_maven_configurations</artifactId>
+    <version>1.0</version>
+    <packaging>jar</packaging>
+
+    <name>Separate Maven Configurations</name>
+
+    <profiles>
+        <profile>
+            <id>DEV</id>
+            <properties>
+                <build.type>dev</build.type>
+            </properties>
+        </profile>
+    </profiles>
+
+    <properties>
+        <build.type>prod</build.type>
+    </properties>
+
+    <build>
+        <filters>
+            <filter>${basedir}/settings/${build.type}.properties</filter>
+        </filters>
+
+        <resources>
+            <resource>
+                <directory>src/main/resources</directory>
+                <filtering>true</filtering>
+            </resource>
+        </resources>
+
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <configuration>
+                    <archive>
+                        <manifest>
+                            <mainClass>info.programmador.Main</mainClass>
+                        </manifest>
+                    </archive>
+                </configuration>
+            </plugin>
+        </plugins>
+<!--
+        <plugins>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>properties-maven-plugin</artifactId>
+                <version>1.0-alpha-1</version>
+                <executions>
+                    <execution>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>read-project-settings-from-properties-file</goal>
+                        </goals>
+                        <configuration>
+                            <files>
+                                <file>${basedir}../settings/${build.type}.properties</file>
+                            </files>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+-->
+    </build>
+</project>
