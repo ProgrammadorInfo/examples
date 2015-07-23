@@ -11,8 +11,8 @@
 
 
     <modules>
-        <module>module1</module>
-        <module>module2</module>
+        <module>services</module>
+        <module>client</module>
         <module>common</module>
     </modules>
 
